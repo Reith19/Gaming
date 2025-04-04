@@ -7,10 +7,6 @@ const BLOCK_SIZE = 30;
 
 let score = 0;
 let board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
-let lastTime = 0;  // Store the last frame time
-let deltaTime = 0;  // Accumulate time to control falling speed
-let gameRunning = false;  // To track if the game is running or paused
-let fallSpeed = 500;  // Falling speed in milliseconds
 
 const tetrominos = [
     [[1, 1, 1, 1]], // I Shape
@@ -31,7 +27,7 @@ function createTetromino() {
 }
 
 function drawBoard() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear canvas each frame
+    ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear the canvas
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLUMNS; col++) {
             if (board[row][col]) {
@@ -55,26 +51,6 @@ function drawTetromino() {
     });
 }
 
-// Draw the shadow of the falling tetromino
-function drawShadow() {
-    let shadowY = currentPosition.y;
-    // Move the shadow down until it hits something
-    while (!checkCollisionAt(currentPosition.x, shadowY + 1)) {
-        shadowY++;
-    }
-    
-    // Draw shadow in gray
-    currentTetromino.forEach((row, rIdx) => {
-        row.forEach((cell, cIdx) => {
-            if (cell) {
-                ctx.fillStyle = 'rgba(128, 128, 128, 0.5)'; // Gray with transparency
-                ctx.fillRect((currentPosition.x + cIdx) * BLOCK_SIZE, (shadowY + rIdx) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-                ctx.strokeRect((currentPosition.x + cIdx) * BLOCK_SIZE, (shadowY + rIdx) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-            }
-        });
-    });
-}
-
 function moveTetrominoDown() {
     currentPosition.y++;
     if (checkCollision()) {
@@ -89,13 +65,13 @@ function moveTetrominoDown() {
     }
 }
 
-function checkCollisionAt(x, y) {
+function checkCollision() {
     return currentTetromino.some((row, rIdx) => {
         return row.some((cell, cIdx) => {
             if (cell) {
-                const newX = x + cIdx;
-                const newY = y + rIdx;
-                return newX < 0 || newX >= COLUMNS || newY >= ROWS || (newY >= 0 && board[newY][newX]);
+                const x = currentPosition.x + cIdx;
+                const y = currentPosition.y + rIdx;
+                return x < 0 || x >= COLUMNS || y >= ROWS || (y >= 0 && board[y][x]);
             }
             return false;
         });
@@ -125,85 +101,19 @@ function clearLines() {
 
 function gameOver() {
     alert('Game Over');
-    resetGame();
-}
-
-function resetGame() {
+    board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
     score = 0;
     document.getElementById('score').innerText = 'Score: ' + score;
-    board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
-    currentTetromino = createTetromino();
-    currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
 }
 
-function gameLoop(timestamp) {
-    // Delta time calculation
-    const deltaTime = timestamp - lastTime;
-    lastTime = timestamp;
-
-    // Check if enough time has passed to move the tetromino down
-    if (deltaTime > fallSpeed) {  // Controls the falling speed
-        moveTetrominoDown();
-    }
-
+function gameLoop() {
     drawBoard();
-    drawShadow();
     drawTetromino();
-
-    // Request the next animation frame
-    if (gameRunning) {
-        requestAnimationFrame(gameLoop);
-    }
+    moveTetrominoDown();
+    requestAnimationFrame(gameLoop);  // Continue the game loop
 }
 
-function startGame() {
-    if (!gameRunning) {
-        gameRunning = true;
-        requestAnimationFrame(gameLoop);
-    }
-}
-
-function pauseGame() {
-    gameRunning = false;
-}
-
-function restartGame() {
-    resetGame();
-    startGame();
-}
-
-// Button Event Listeners
+// Start the game when the start button is clicked
 document.getElementById('startBtn').addEventListener('click', function() {
-    startGame();
-    this.blur(); // Remove focus from button after click
-});
-document.getElementById('pauseBtn').addEventListener('click', function() {
-    pauseGame();
-    this.blur(); // Remove focus from button after click
-});
-document.getElementById('restartBtn').addEventListener('click', function() {
-    restartGame();
-    this.blur(); // Remove focus from button after click
-});
-
-// Keyboard Controls
-document.addEventListener('keydown', (event) => {
-    // Prevent the default behavior for the arrow keys when they're used for the game
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-        event.preventDefault();
-    }
-
-    if (event.key === 'ArrowLeft') moveTetrominoLeft();
-    if (event.key === 'ArrowRight') moveTetrominoRight();
-    if (event.key === 'ArrowDown') moveTetrominoDown();
-    if (event.key === 'ArrowUp') rotateTetromino();
-    if (event.key === ' ') { // Spacebar for automatic drop
-        while (!checkCollisionAt(currentPosition.x, currentPosition.y + 1)) {
-            currentPosition.y++;
-        }
-        placeTetromino();
-        clearLines();
-        currentTetromino = createTetromino();
-        currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
-    }
+    requestAnimationFrame(gameLoop);
 });
