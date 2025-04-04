@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Tetris Game</title>
+    <title>Gamehub</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="landing-container">
-        <h1>Welcome to the Tetris Game</h1>
-        <p>Click the button below to start the game:</p>
-        <button id="startGameBtn">Start Game</button>
+    <div class="gamehub-container">
+        <h1>Welcome to Gamehub</h1>
+        <p>Select a game to play:</p>
+        <div class="games">
+            <!-- Tetris Game Icon -->
+            <div class="game-icon" id="tetris-icon">
+                <a href="game.html">
+                    <img src="tetris-icon.png" alt="Tetris" class="game-icon-img">
+                </a>
+                <p>Tetris</p>
+            </div>
+            <!-- Add more games here -->
+        </div>
     </div>
-    <script>
-        // Handle the button click to show the game
-        document.getElementById('startGameBtn').addEventListener('click', function() {
-            window.location.href = '/game.html'; // Redirect to the game page
-        });
-    </script>
+    <script src="gamehub.js"></script>
 </body>
 </html>
