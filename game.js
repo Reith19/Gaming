@@ -31,7 +31,7 @@ function createTetromino() {
 }
 
 function drawBoard() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear canvas each frame
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLUMNS; col++) {
             if (board[row][col]) {
@@ -188,7 +188,10 @@ document.getElementById('restartBtn').addEventListener('click', function() {
 
 // Keyboard Controls
 document.addEventListener('keydown', (event) => {
-    event.preventDefault(); // Prevent the default behavior (like page scrolling)
+    // Prevent the default behavior for the arrow keys when they're used for the game
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+    }
 
     if (event.key === 'ArrowLeft') moveTetrominoLeft();
     if (event.key === 'ArrowRight') moveTetrominoRight();
