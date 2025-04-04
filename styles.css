@@ -14,9 +14,9 @@ body {
 
 .gamehub-container {
     text-align: center;
-    max-width: 350px; /* Limit the width to fit well on screen */
+    max-width: 320px; /* Set a max-width to fit content properly */
     width: 100%;
-    padding: 20px;
+    padding: 15px;
     box-sizing: border-box;
 }
 
@@ -25,19 +25,19 @@ body {
     background-color: #000;
     margin: 20px auto;
     display: block;
-    max-width: 240px; /* Set max-width to keep it smaller */
-    width: 100%; /* Make the canvas take 100% of the container width */
+    max-width: 240px; /* Reduce the canvas size to fit better */
+    width: 100%;
     height: auto;
 }
 
 button {
-    margin: 10px;
-    padding: 10px 20px;
+    margin: 5px;
+    padding: 8px 15px;
     background-color: #333;
     border: none;
     color: white;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px; /* Make the buttons smaller */
     border-radius: 5px;
     width: 100%; /* Make buttons take full width of container */
     box-sizing: border-box;
@@ -48,8 +48,22 @@ button:hover {
 }
 
 #score {
-    margin: 20px;
-    font-size: 20px;
+    margin: 15px;
+    font-size: 18px;
+}
+
+.gamehub-container h1 {
+    font-size: 26px; /* Smaller font for title */
+    margin: 0;
+}
+
+.gamehub-container p {
+    font-size: 16px; /* Adjusted font size for better spacing */
+    margin: 15px 0;
+}
+
+.games {
+    margin: 0;
 }
 
 /* Optional: Center the icon */
@@ -59,6 +73,22 @@ button:hover {
 }
 
 .game-icon img {
-    width: 200px;
+    width: 180px; /* Make the icon smaller */
     height: auto;
+}
+
+/* For mobile screens: */
+@media screen and (max-width: 480px) {
+    .gamehub-container {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    #tetris {
+        max-width: 200px;
+    }
+
+    button {
+        font-size: 12px;
+    }
 }
