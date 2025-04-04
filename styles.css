@@ -10,6 +10,10 @@ body {
 .gamehub-container {
     text-align: center;
     margin-top: 50px;
+    max-width: 400px; /* Limit the maximum width of the game area */
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 
 #tetris {
@@ -17,9 +21,9 @@ body {
     background-color: #000;
     margin: 20px auto;
     display: block;
-    max-width: 300px; /* Reduced the canvas size */
-    width: 100%;
-    height: auto;
+    width: 100%; /* Make the canvas take 100% width within the container */
+    max-width: 240px; /* Set the maximum width of the canvas to 240px */
+    height: auto;  /* Automatically scale the height based on width */
 }
 
 button {
@@ -42,7 +46,7 @@ button:hover {
     font-size: 20px;
 }
 
-/* Restored the normal layout of the home page */
+/* Restore the normal layout of the home page */
 .gamehub-container h1 {
     font-size: 32px;
     margin: 0;
