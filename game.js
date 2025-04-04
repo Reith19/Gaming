@@ -7,7 +7,7 @@ const BLOCK_SIZE = 30;
 
 let score = 0;
 let board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
-let gameInterval;
+let lastTime = 0;  // Store the last frame time
 let gameRunning = false;  // To track if the game is running or paused
 
 const tetrominos = [
@@ -134,22 +134,35 @@ function resetGame() {
     currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
 }
 
-function gameLoop() {
+function gameLoop(timestamp) {
+    // Delta time calculation
+    const deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+
+    // Run the game loop
     drawBoard();
-    drawShadow();  // Draw the shadow of the falling piece
+    drawShadow();
     drawTetromino();
-    moveTetrominoDown();
+
+    // Move the tetromino based on time passed (for smooth falling)
+    if (deltaTime > 100) {  // Controls the falling speed, adjust to your preference
+        moveTetrominoDown();
+    }
+
+    // Request the next animation frame
+    if (gameRunning) {
+        requestAnimationFrame(gameLoop);
+    }
 }
 
 function startGame() {
     if (!gameRunning) {
-        gameInterval = setInterval(gameLoop, 500);
         gameRunning = true;
+        requestAnimationFrame(gameLoop);
     }
 }
 
 function pauseGame() {
-    clearInterval(gameInterval);
     gameRunning = false;
 }
 
@@ -165,10 +178,7 @@ document.getElementById('restartBtn').addEventListener('click', restartGame);
 
 // Keyboard Controls
 document.addEventListener('keydown', (event) => {
-    // Prevent the default behavior for the arrow keys when they're used for the game
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-        event.preventDefault();
-    }
+    event.preventDefault(); // Prevent the default behavior (like page scrolling)
 
     if (event.key === 'ArrowLeft') moveTetrominoLeft();
     if (event.key === 'ArrowRight') moveTetrominoRight();
