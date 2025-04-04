@@ -8,7 +8,9 @@ const BLOCK_SIZE = 30;
 let score = 0;
 let board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
 let lastTime = 0;  // Store the last frame time
+let deltaTime = 0;  // Accumulate time to control falling speed
 let gameRunning = false;  // To track if the game is running or paused
+let fallSpeed = 500;  // Falling speed in milliseconds
 
 const tetrominos = [
     [[1, 1, 1, 1]], // I Shape
@@ -134,11 +136,24 @@ function resetGame() {
     currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
 }
 
-function gameLoop() {
+function gameLoop(timestamp) {
+    // Delta time calculation
+    const deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+
+    // Check if enough time has passed to move the tetromino down
+    if (deltaTime > fallSpeed) {  // Controls the falling speed
+        moveTetrominoDown();
+    }
+
     drawBoard();
     drawShadow();
     drawTetromino();
-    moveTetrominoDown();
+
+    // Request the next animation frame
+    if (gameRunning) {
+        requestAnimationFrame(gameLoop);
+    }
 }
 
 function startGame() {
@@ -173,10 +188,7 @@ document.getElementById('restartBtn').addEventListener('click', function() {
 
 // Keyboard Controls
 document.addEventListener('keydown', (event) => {
-    // Prevent the default behavior for the arrow keys when they're used for the game
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-        event.preventDefault();
-    }
+    event.preventDefault(); // Prevent the default behavior (like page scrolling)
 
     if (event.key === 'ArrowLeft') moveTetrominoLeft();
     if (event.key === 'ArrowRight') moveTetrominoRight();
