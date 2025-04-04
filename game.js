@@ -7,6 +7,8 @@ const BLOCK_SIZE = 30;
 
 let score = 0;
 let board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
+let gameInterval;
+let gameRunning = false;  // To track if the game is running or paused
 
 const tetrominos = [
     [[1, 1, 1, 1]], // I Shape
@@ -101,32 +103,15 @@ function clearLines() {
 
 function gameOver() {
     alert('Game Over');
-    board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
+    resetGame();
+}
+
+function resetGame() {
     score = 0;
     document.getElementById('score').innerText = 'Score: ' + score;
-}
-
-function moveTetrominoLeft() {
-    currentPosition.x--;
-    if (checkCollision()) {
-        currentPosition.x++;
-    }
-}
-
-function moveTetrominoRight() {
-    currentPosition.x++;
-    if (checkCollision()) {
-        currentPosition.x--;
-    }
-}
-
-function rotateTetromino() {
-    const rotated = currentTetromino[0].map((_, idx) => currentTetromino.map(row => row[idx])).reverse();
-    const originalTetromino = currentTetromino;
-    currentTetromino = rotated;
-    if (checkCollision()) {
-        currentTetromino = originalTetromino;
-    }
+    board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
+    currentTetromino = createTetromino();
+    currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
 }
 
 function gameLoop() {
@@ -135,7 +120,27 @@ function gameLoop() {
     moveTetrominoDown();
 }
 
-setInterval(gameLoop, 500);
+function startGame() {
+    if (!gameRunning) {
+        gameInterval = setInterval(gameLoop, 500);
+        gameRunning = true;
+    }
+}
+
+function pauseGame() {
+    clearInterval(gameInterval);
+    gameRunning = false;
+}
+
+function restartGame() {
+    resetGame();
+    startGame();
+}
+
+// Button Event Listeners
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('pauseBtn').addEventListener('click', pauseGame);
+document.getElementById('restartBtn').addEventListener('click', restartGame);
 
 // Keyboard Controls
 document.addEventListener('keydown', (event) => {
