@@ -23,7 +23,7 @@ let currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
 let lastTime = 0;
 let deltaTime = 0;
 let gameRunning = false;
-let fallSpeed = 1900;  // Falling speed in milliseconds (increase for slower fall)
+let fallSpeed = 700;  // Falling speed in milliseconds
 
 function createTetromino() {
     const shape = tetrominos[Math.floor(Math.random() * tetrominos.length)];
@@ -106,4 +106,62 @@ function clearLines() {
 function gameOver() {
     alert('Game Over');
     board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
-    score
+    score = 0;
+    document.getElementById('score').innerText = 'Score: ' + score;
+}
+
+function gameLoop(timestamp) {
+    const deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+
+    if (deltaTime > fallSpeed) {
+        moveTetrominoDown(); // Move the tetromino down after fallSpeed
+    }
+
+    drawBoard();
+    drawTetromino();
+
+    if (gameRunning) {
+        requestAnimationFrame(gameLoop);
+    }
+}
+
+// Start the game when the start button is clicked
+document.getElementById('startBtn').addEventListener('click', function() {
+    gameRunning = true;
+    requestAnimationFrame(gameLoop); // Start the game loop
+});
+
+// Key Controls for moving and rotating tetromino
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') moveTetrominoLeft();
+    if (event.key === 'ArrowRight') moveTetrominoRight();
+    if (event.key === 'ArrowDown') moveTetrominoDown();
+    if (event.key === 'ArrowUp') rotateTetromino();
+});
+
+// Moving the tetromino left
+function moveTetrominoLeft() {
+    currentPosition.x--;
+    if (checkCollision()) {
+        currentPosition.x++; // If collision, revert the movement
+    }
+}
+
+// Moving the tetromino right
+function moveTetrominoRight() {
+    currentPosition.x++;
+    if (checkCollision()) {
+        currentPosition.x--; // If collision, revert the movement
+    }
+}
+
+// Rotating the tetromino
+function rotateTetromino() {
+    const rotated = currentTetromino[0].map((_, idx) => currentTetromino.map(row => row[idx])).reverse();
+    const originalTetromino = currentTetromino;
+    currentTetromino = rotated;
+    if (checkCollision()) {
+        currentTetromino = originalTetromino; // Revert to original if rotation causes collision
+    }
+}
