@@ -134,25 +134,11 @@ function resetGame() {
     currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
 }
 
-function gameLoop(timestamp) {
-    // Delta time calculation
-    const deltaTime = timestamp - lastTime;
-    lastTime = timestamp;
-
-    // Run the game loop
+function gameLoop() {
     drawBoard();
     drawShadow();
     drawTetromino();
-
-    // Move the tetromino based on time passed (for smooth falling)
-    if (deltaTime > 100) {  // Controls the falling speed, adjust to your preference
-        moveTetrominoDown();
-    }
-
-    // Request the next animation frame
-    if (gameRunning) {
-        requestAnimationFrame(gameLoop);
-    }
+    moveTetrominoDown();
 }
 
 function startGame() {
@@ -172,13 +158,25 @@ function restartGame() {
 }
 
 // Button Event Listeners
-document.getElementById('startBtn').addEventListener('click', startGame);
-document.getElementById('pauseBtn').addEventListener('click', pauseGame);
-document.getElementById('restartBtn').addEventListener('click', restartGame);
+document.getElementById('startBtn').addEventListener('click', function() {
+    startGame();
+    this.blur(); // Remove focus from button after click
+});
+document.getElementById('pauseBtn').addEventListener('click', function() {
+    pauseGame();
+    this.blur(); // Remove focus from button after click
+});
+document.getElementById('restartBtn').addEventListener('click', function() {
+    restartGame();
+    this.blur(); // Remove focus from button after click
+});
 
 // Keyboard Controls
 document.addEventListener('keydown', (event) => {
-    event.preventDefault(); // Prevent the default behavior (like page scrolling)
+    // Prevent the default behavior for the arrow keys when they're used for the game
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+    }
 
     if (event.key === 'ArrowLeft') moveTetrominoLeft();
     if (event.key === 'ArrowRight') moveTetrominoRight();
