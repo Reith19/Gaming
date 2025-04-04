@@ -20,10 +20,10 @@ const tetrominos = [
 
 let currentTetromino = createTetromino();
 let currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
-let lastTime = 0;  // Store the last frame time
-let deltaTime = 0;  // Accumulate time to control falling speed
-let gameRunning = false;  // To track if the game is running or paused
-let fallSpeed = 2150;  // Falling speed in milliseconds (increase for slower fall)
+let lastTime = 0;
+let deltaTime = 0;
+let gameRunning = false;
+let fallSpeed = 1900;  // Falling speed in milliseconds (increase for slower fall)
 
 function createTetromino() {
     const shape = tetrominos[Math.floor(Math.random() * tetrominos.length)];
@@ -31,7 +31,7 @@ function createTetromino() {
 }
 
 function drawBoard() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLUMNS; col++) {
             if (board[row][col]) {
@@ -106,29 +106,4 @@ function clearLines() {
 function gameOver() {
     alert('Game Over');
     board = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(null));
-    score = 0;
-    document.getElementById('score').innerText = 'Score: ' + score;
-}
-
-function gameLoop(timestamp) {
-    const deltaTime = timestamp - lastTime;
-    lastTime = timestamp;
-
-    if (deltaTime > fallSpeed) {
-        moveTetrominoDown();
-    }
-
-    drawBoard();
-    drawTetromino();
-
-    // Keep the game loop running if the game is still running
-    if (gameRunning) {
-        requestAnimationFrame(gameLoop);
-    }
-}
-
-// Start the game when the start button is clicked
-document.getElementById('startBtn').addEventListener('click', function() {
-    gameRunning = true;
-    requestAnimationFrame(gameLoop);
-});
+    score
