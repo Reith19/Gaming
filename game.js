@@ -20,10 +20,9 @@ const tetrominos = [
 
 let currentTetromino = createTetromino();
 let currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
-let lastTime = 0;
-let deltaTime = 0;
 let gameRunning = false;
-let fallSpeed = 700;  // Falling speed in milliseconds
+let fallSpeed = 1800;  // Falling speed set to 1800 milliseconds (slower fall)
+let lastTime = 0;
 
 function createTetromino() {
     const shape = tetrominos[Math.floor(Math.random() * tetrominos.length)];
@@ -116,10 +115,9 @@ function gameLoop(timestamp) {
 
     if (deltaTime > fallSpeed) {
         moveTetrominoDown(); // Move the tetromino down after fallSpeed
+        drawBoard();
+        drawTetromino();
     }
-
-    drawBoard();
-    drawTetromino();
 
     if (gameRunning) {
         requestAnimationFrame(gameLoop);
