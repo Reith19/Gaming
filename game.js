@@ -23,7 +23,7 @@ let currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
 let lastTime = 0;  // Store the last frame time
 let deltaTime = 0;  // Accumulate time to control falling speed
 let gameRunning = false;  // To track if the game is running or paused
-let fallSpeed = 3000;  // Falling speed in milliseconds (increase for slower fall)
+let fallSpeed = 2150;  // Falling speed in milliseconds (increase for slower fall)
 
 function createTetromino() {
     const shape = tetrominos[Math.floor(Math.random() * tetrominos.length)];
