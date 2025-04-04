@@ -15,8 +15,11 @@ body {
 #tetris {
     border: 2px solid #fff;
     background-color: #000;
-    margin: 20px auto; /* Center the canvas */
-    display: block; /* Ensures it behaves like a block-level element */
+    margin: 20px auto;
+    display: block;
+    max-width: 300px; /* Reduced the canvas size */
+    width: 100%;
+    height: auto;
 }
 
 button {
@@ -39,7 +42,7 @@ button:hover {
     font-size: 20px;
 }
 
-/* Restore the normal layout of the home page */
+/* Restored the normal layout of the home page */
 .gamehub-container h1 {
     font-size: 32px;
     margin: 0;
