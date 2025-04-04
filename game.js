@@ -53,6 +53,26 @@ function drawTetromino() {
     });
 }
 
+// Draw the shadow of the falling tetromino
+function drawShadow() {
+    let shadowY = currentPosition.y;
+    // Move the shadow down until it hits something
+    while (!checkCollisionAt(currentPosition.x, shadowY + 1)) {
+        shadowY++;
+    }
+    
+    // Draw shadow in gray
+    currentTetromino.forEach((row, rIdx) => {
+        row.forEach((cell, cIdx) => {
+            if (cell) {
+                ctx.fillStyle = 'rgba(128, 128, 128, 0.5)'; // Gray with transparency
+                ctx.fillRect((currentPosition.x + cIdx) * BLOCK_SIZE, (shadowY + rIdx) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+                ctx.strokeRect((currentPosition.x + cIdx) * BLOCK_SIZE, (shadowY + rIdx) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            }
+        });
+    });
+}
+
 function moveTetrominoDown() {
     currentPosition.y++;
     if (checkCollision()) {
@@ -67,13 +87,13 @@ function moveTetrominoDown() {
     }
 }
 
-function checkCollision() {
+function checkCollisionAt(x, y) {
     return currentTetromino.some((row, rIdx) => {
         return row.some((cell, cIdx) => {
             if (cell) {
-                const x = currentPosition.x + cIdx;
-                const y = currentPosition.y + rIdx;
-                return x < 0 || x >= COLUMNS || y >= ROWS || (y >= 0 && board[y][x]);
+                const newX = x + cIdx;
+                const newY = y + rIdx;
+                return newX < 0 || newX >= COLUMNS || newY >= ROWS || (newY >= 0 && board[newY][newX]);
             }
             return false;
         });
@@ -116,6 +136,7 @@ function resetGame() {
 
 function gameLoop() {
     drawBoard();
+    drawShadow();  // Draw the shadow of the falling piece
     drawTetromino();
     moveTetrominoDown();
 }
@@ -150,4 +171,13 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') moveTetrominoRight();
     if (event.key === 'ArrowDown') moveTetrominoDown();
     if (event.key === 'ArrowUp') rotateTetromino();
+    if (event.key === ' ') { // Spacebar for automatic drop
+        while (!checkCollisionAt(currentPosition.x, currentPosition.y + 1)) {
+            currentPosition.y++;
+        }
+        placeTetromino();
+        clearLines();
+        currentTetromino = createTetromino();
+        currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
+    }
 });
