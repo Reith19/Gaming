@@ -23,9 +23,9 @@ body {
 #tetris {
     border: 2px solid #fff;
     background-color: #000;
-    margin: 20px auto;
+    margin: 10px auto;
     display: block;
-    max-width: 240px; /* Reduce the canvas size to fit better */
+    max-width: 220px; /* Reduce the canvas size further */
     width: 100%;
     height: auto;
 }
@@ -37,9 +37,9 @@ button {
     border: none;
     color: white;
     cursor: pointer;
-    font-size: 14px; /* Make the buttons smaller */
+    font-size: 14px; /* Adjust font size for buttons */
     border-radius: 5px;
-    width: 100%; /* Make buttons take full width of container */
+    width: 80px; /* Set a fixed width for buttons */
     box-sizing: border-box;
 }
 
@@ -48,7 +48,7 @@ button:hover {
 }
 
 #score {
-    margin: 15px;
+    margin: 10px;
     font-size: 18px;
 }
 
@@ -59,14 +59,20 @@ button:hover {
 
 .gamehub-container p {
     font-size: 16px; /* Adjusted font size for better spacing */
-    margin: 15px 0;
+    margin: 10px 0;
 }
 
 .games {
     margin: 0;
 }
 
-/* Optional: Center the icon */
+/* Make buttons display horizontally */
+button-container {
+    display: flex;
+    justify-content: center; /* Align buttons horizontally */
+    margin-top: 20px;
+}
+
 .game-icon {
     display: inline-block;
     text-align: center;
@@ -77,7 +83,7 @@ button:hover {
     height: auto;
 }
 
-/* For mobile screens: */
+/* Adjust layout for smaller screens */
 @media screen and (max-width: 480px) {
     .gamehub-container {
         max-width: 100%;
