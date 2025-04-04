@@ -14,9 +14,9 @@ body {
 
 .gamehub-container {
     text-align: center;
-    max-width: 320px; /* Set a max-width to fit content properly */
+    max-width: 320px; /* Limiting the width of the container */
     width: 100%;
-    padding: 15px;
+    padding: 10px;
     box-sizing: border-box;
 }
 
@@ -25,7 +25,7 @@ body {
     background-color: #000;
     margin: 10px auto;
     display: block;
-    max-width: 220px; /* Reduce the canvas size further */
+    max-width: 200px; /* Reduce canvas size further to fit better */
     width: 100%;
     height: auto;
 }
@@ -37,9 +37,9 @@ button {
     border: none;
     color: white;
     cursor: pointer;
-    font-size: 14px; /* Adjust font size for buttons */
+    font-size: 12px; /* Smaller font size for buttons */
     border-radius: 5px;
-    width: 80px; /* Set a fixed width for buttons */
+    width: 80px; /* Fixed width for buttons */
     box-sizing: border-box;
 }
 
@@ -49,16 +49,16 @@ button:hover {
 
 #score {
     margin: 10px;
-    font-size: 18px;
+    font-size: 14px; /* Adjusted font size for the score */
 }
 
 .gamehub-container h1 {
-    font-size: 26px; /* Smaller font for title */
+    font-size: 22px; /* Smaller font for title */
     margin: 0;
 }
 
 .gamehub-container p {
-    font-size: 16px; /* Adjusted font size for better spacing */
+    font-size: 14px; /* Adjusted font size for better spacing */
     margin: 10px 0;
 }
 
@@ -66,11 +66,11 @@ button:hover {
     margin: 0;
 }
 
-/* Make buttons display horizontally */
-button-container {
+/* Horizontal button layout */
+.button-container {
     display: flex;
     justify-content: center; /* Align buttons horizontally */
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .game-icon {
@@ -79,11 +79,11 @@ button-container {
 }
 
 .game-icon img {
-    width: 180px; /* Make the icon smaller */
+    width: 160px; /* Reduce icon size further */
     height: auto;
 }
 
-/* Adjust layout for smaller screens */
+/* For mobile screens: */
 @media screen and (max-width: 480px) {
     .gamehub-container {
         max-width: 100%;
@@ -91,10 +91,11 @@ button-container {
     }
 
     #tetris {
-        max-width: 200px;
+        max-width: 180px; /* Smaller canvas on mobile */
     }
 
     button {
-        font-size: 12px;
+        font-size: 10px; /* Adjust button size on mobile */
+        width: 60px;
     }
 }
