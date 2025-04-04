@@ -1,30 +1,22 @@
 /* Global Styles */
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
     background-color: #222;
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-    flex-direction: column;
+    margin: 0;
+    padding: 0;
 }
 
 .gamehub-container {
     text-align: center;
-    max-width: 600px; /* Limit the width to prevent it from stretching too wide */
-    width: 100%; /* Ensure it still takes up the full available width up to the max-width */
-    margin: 0 10px; /* Add some margin to prevent it from touching the edges */
+    margin-top: 50px;
 }
 
 #tetris {
     border: 2px solid #fff;
     background-color: #000;
-    max-width: 300px; /* Optional: Limiting the size of the canvas for better display */
-    width: 100%; /* Ensure it resizes properly */
+    margin: 20px auto; /* Center the canvas */
+    display: block; /* Ensures it behaves like a block-level element */
 }
 
 button {
@@ -47,18 +39,28 @@ button:hover {
     font-size: 20px;
 }
 
-/* Adjustments for smaller screens */
-@media screen and (max-width: 480px) {
-    body {
-        flex-direction: column;
-    }
+/* Restore the normal layout of the home page */
+.gamehub-container h1 {
+    font-size: 32px;
+    margin: 0;
+}
 
-    .gamehub-container {
-        width: 100%;
-        margin: 20px;
-    }
+.gamehub-container p {
+    font-size: 20px;
+    margin: 20px 0;
+}
 
-    button {
-        width: 100%;
-    }
+.games {
+    margin: 0;
+}
+
+/* Optional: Center the icon */
+.game-icon {
+    display: inline-block;
+    text-align: center;
+}
+
+.game-icon img {
+    width: 200px;
+    height: auto;
 }
