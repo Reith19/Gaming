@@ -139,12 +139,6 @@ setInterval(gameLoop, 500);
 
 // Keyboard Controls
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft') moveTetrominoLeft();
-    if (event.key === 'ArrowRight') moveTetrominoRight();
-    if (event.key === 'ArrowDown') moveTetrominoDown();
-    if (event.key === 'ArrowUp') rotateTetromino();
-});
-document.addEventListener('keydown', (event) => {
     event.preventDefault(); // Prevent the default behavior (like page scrolling)
 
     if (event.key === 'ArrowLeft') moveTetrominoLeft();
