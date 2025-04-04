@@ -1,33 +1,21 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     background-color: #222;
     color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.game-container {
-    text-align: center;
-}
-
-#tetris {
-    border: 2px solid #fff;
-    background-color: #000;
 }
 
 button {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     border: none;
     color: white;
     padding: 10px 20px;
     text-align: center;
-    text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 5px;
+    margin: 10px;
     cursor: pointer;
     border-radius: 5px;
 }
@@ -38,4 +26,20 @@ button:hover {
 
 button:active {
     background-color: #3e8e41;
+}
+
+/* Landing Page Styling */
+.landing-container {
+    text-align: center;
+    padding: 100px;
+}
+
+.landing-container h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.landing-container p {
+    font-size: 18px;
+    margin-bottom: 30px;
 }
