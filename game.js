@@ -165,7 +165,10 @@ document.getElementById('restartBtn').addEventListener('click', restartGame);
 
 // Keyboard Controls
 document.addEventListener('keydown', (event) => {
-    event.preventDefault(); // Prevent the default behavior (like page scrolling)
+    // Prevent the default behavior for the arrow keys when they're used for the game
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+    }
 
     if (event.key === 'ArrowLeft') moveTetrominoLeft();
     if (event.key === 'ArrowRight') moveTetrominoRight();
