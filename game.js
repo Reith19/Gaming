@@ -187,7 +187,7 @@ function clearLines() {
 
 // Draw the game
 function draw() {
-  // Clear the off-screen canvas completely
+  // Clear the off-screen canvas completely before drawing
   offScreenCtx.clearRect(0, 0, offScreenCanvas.width, offScreenCanvas.height);
 
   // Draw the board
