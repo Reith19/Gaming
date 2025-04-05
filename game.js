@@ -31,10 +31,10 @@ let isMoving = false; // To track whether the piece is moving
 
 // Start the game
 function startGame() {
-  // Reset the board to empty
+  // Reset the board to be empty
   board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 
-  // Generate the first piece
+  // Generate the first piece and ensure it's at the top
   currentPiece = generateRandomPiece();
   currentPos = { x: 4, y: 0 }; // Start at the top center
 
