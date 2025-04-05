@@ -10,7 +10,8 @@ const offScreenCtx = offScreenCanvas.getContext("2d");
 const ROWS = 20;
 const COLS = 10;
 const BLOCK_SIZE = 30;
-const FALL_SPEED = 1500; // Fall speed in milliseconds (slower fall)
+let FALL_SPEED = 1000; // Base fall speed in milliseconds (can adjust dynamically)
+const FALL_SPEED_MULTIPLIER = 0.5; // Adjust fall speed by 50%
 
 const SHAPES = [
   [[1, 1, 1, 1]], // I
@@ -25,7 +26,7 @@ const SHAPES = [
 let board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 let currentPiece;
 let currentPos;
-let gameInterval;
+let lastTime = 0;
 let isGameOver = false;
 let isMoving = false; // To track whether the piece is moving
 
@@ -56,22 +57,28 @@ function generateRandomPiece() {
 }
 
 // Game loop
-function gameLoop() {
+function gameLoop(timestamp) {
   if (isGameOver) {
     alert("Game Over!");
     return;
   }
 
-  // Update game state
-  if (!movePiece(0, 1)) {
-    placePiece();
-    clearLines();
-    currentPiece = generateRandomPiece();
-    currentPos = { x: 4, y: 0 };
+  // Calculate the time elapsed since the last frame
+  let deltaTime = timestamp - lastTime;
+  lastTime = timestamp;
 
-    // Check if the new piece can be placed
-    if (!isValidMove(currentPiece, currentPos)) {
-      isGameOver = true; // End the game if no space for the piece
+  // Speed control: move piece down every FALL_SPEED time units
+  if (deltaTime > FALL_SPEED * FALL_SPEED_MULTIPLIER) {
+    if (!movePiece(0, 1)) {
+      placePiece();
+      clearLines();
+      currentPiece = generateRandomPiece();
+      currentPos = { x: 4, y: 0 };
+
+      // Check if the new piece can be placed
+      if (!isValidMove(currentPiece, currentPos)) {
+        isGameOver = true; // End the game if no space for the piece
+      }
     }
   }
 
