@@ -10,9 +10,8 @@ const offScreenCtx = offScreenCanvas.getContext("2d");
 const ROWS = 20;
 const COLS = 10;
 const BLOCK_SIZE = 30;
-const FALL_SPEED = 1500; // Fall speed in milliseconds (slowed down)
+const FALL_SPEED = 1500; // Fall speed in milliseconds (slower fall)
 
-// Shapes of the Tetriminos
 const SHAPES = [
   [[1, 1, 1, 1]], // I
   [[1, 1], [1, 1]], // O
@@ -32,9 +31,14 @@ let isMoving = false; // To track whether the piece is moving
 
 // Start the game
 function startGame() {
+  // Reset the board to empty
   board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+
+  // Generate the first piece
   currentPiece = generateRandomPiece();
-  currentPos = { x: 4, y: 0 };
+  currentPos = { x: 4, y: 0 }; // Start at the top center
+
+  // Ensure the game isn't over
   isGameOver = false;
 
   // Resize the off-screen canvas to match the main canvas size
