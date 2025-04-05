@@ -95,6 +95,10 @@ function gameLoop(timestamp) {
 // Move piece by dx and dy
 function movePiece(dx, dy) {
   const newPos = { x: currentPos.x + dx, y: currentPos.y + dy };
+
+  // Clear previous position before moving
+  clearPiece(currentPos);
+
   if (isValidMove(currentPiece, newPos)) {
     currentPos = newPos;
     return true;
@@ -109,6 +113,10 @@ function rotatePieceCounterClockwise() {
   ).reverse();  // Reversing the rotation direction
 
   const newPiece = { shape: rotatedShape };
+
+  // Clear previous position before rotating
+  clearPiece(currentPos);
+
   if (isValidMove(newPiece, currentPos)) {
     currentPiece = newPiece;
   }
@@ -121,8 +129,23 @@ function rotatePieceClockwise() {
   );
 
   const newPiece = { shape: rotatedShape };
+
+  // Clear previous position before rotating
+  clearPiece(currentPos);
+
   if (isValidMove(newPiece, currentPos)) {
     currentPiece = newPiece;
+  }
+}
+
+// Clear the previous position of the piece
+function clearPiece(pos) {
+  for (let row = 0; row < currentPiece.shape.length; row++) {
+    for (let col = 0; col < currentPiece.shape[row].length; col++) {
+      if (currentPiece.shape[row][col]) {
+        board[pos.y + row][pos.x + col] = 0;
+      }
+    }
   }
 }
 
