@@ -80,7 +80,7 @@ function gameLoop(timestamp) {
       if (!isValidMove(currentPiece, currentPos)) {
         isGameOver = true; // End the game if no space for the piece
       } else {
-        isPieceFalling = false;
+        isPieceFalling = false; // Allow next piece to fall
       }
     }
   }
@@ -102,8 +102,20 @@ function movePiece(dx, dy) {
   return false;
 }
 
-// Rotate piece clockwise
-function rotatePiece() {
+// Rotate piece counter-clockwise (down arrow)
+function rotatePieceCounterClockwise() {
+  const rotatedShape = currentPiece.shape.map((_, index) =>
+    currentPiece.shape.map(row => row[index])
+  ).reverse();  // Reversing the rotation direction
+
+  const newPiece = { shape: rotatedShape };
+  if (isValidMove(newPiece, currentPos)) {
+    currentPiece = newPiece;
+  }
+}
+
+// Rotate piece clockwise (up arrow)
+function rotatePieceClockwise() {
   const rotatedShape = currentPiece.shape[0].map((_, index) =>
     currentPiece.shape.map(row => row[index])
   );
@@ -237,8 +249,8 @@ document.addEventListener("keydown", (e) => {
 
   if (e.key === "ArrowLeft") movePiece(-1, 0);
   if (e.key === "ArrowRight") movePiece(1, 0);
-  if (e.key === "ArrowDown") movePiece(0, 1);
-  if (e.key === "ArrowUp") rotatePiece();
+  if (e.key === "ArrowDown") rotatePieceCounterClockwise(); // Down arrow rotates counter-clockwise
+  if (e.key === "ArrowUp") rotatePieceClockwise(); // Up arrow rotates clockwise
   if (e.key === " ") movePiece(0, 1); // Automatically drop piece when space is pressed
 
   setTimeout(() => {
