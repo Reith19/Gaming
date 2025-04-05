@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 const ROWS = 20;
 const COLS = 10;
 const BLOCK_SIZE = 30;
-let fallSpeed = 500; // Updated speed to 0.5 seconds
+let fallSpeed = 500; // Fall speed set to 0.5 seconds
 let board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 let currentPiece;
 let currentPos;
@@ -142,7 +142,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 function rotatePieceClockwise() {
-    let newShape = currentPiece.shape[0].map((val, index) => currentPiece.shape.map(row => row[index]).reverse());
+    let newShape = currentPiece.shape.map((_, index) => currentPiece.shape.map(row => row[index]).reverse());
     let newPiece = { shape: newShape };
     if (isValidMove(newPiece, currentPos)) {
         currentPiece = newPiece;
@@ -150,8 +150,8 @@ function rotatePieceClockwise() {
 }
 
 function rotatePieceCounterClockwise() {
-    let newShape = currentPiece.shape[0].map((val, index) => currentPiece.shape.map(row => row[index]));
-    let newPiece = { shape: newShape.reverse() };
+    let newShape = currentPiece.shape.map((_, index) => currentPiece.shape.map(row => row.reverse()[index]));
+    let newPiece = { shape: newShape };
     if (isValidMove(newPiece, currentPos)) {
         currentPiece = newPiece;
     }
