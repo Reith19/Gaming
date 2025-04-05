@@ -11,7 +11,7 @@ const ROWS = 20;
 const COLS = 10;
 const BLOCK_SIZE = 30;
 let FALL_SPEED = 1000; // Base fall speed in milliseconds (can adjust dynamically)
-const FALL_SPEED_MULTIPLIER = 0.5; // Adjust fall speed by 50%
+const FALL_SPEED_MULTIPLIER = 0.75; // Adjust fall speed by 25% faster than the previous setting
 
 const SHAPES = [
   [[1, 1, 1, 1]], // I
@@ -29,6 +29,7 @@ let currentPos;
 let lastTime = 0;
 let isGameOver = false;
 let isMoving = false; // To track whether the piece is moving
+let isPieceFalling = false; // Track if a piece is falling
 
 // Start the game
 function startGame() {
@@ -68,7 +69,7 @@ function gameLoop(timestamp) {
   lastTime = timestamp;
 
   // Speed control: move piece down every FALL_SPEED time units
-  if (deltaTime > FALL_SPEED * FALL_SPEED_MULTIPLIER) {
+  if (deltaTime > FALL_SPEED * FALL_SPEED_MULTIPLIER && !isPieceFalling) {
     if (!movePiece(0, 1)) {
       placePiece();
       clearLines();
@@ -78,6 +79,8 @@ function gameLoop(timestamp) {
       // Check if the new piece can be placed
       if (!isValidMove(currentPiece, currentPos)) {
         isGameOver = true; // End the game if no space for the piece
+      } else {
+        isPieceFalling = false;
       }
     }
   }
@@ -132,6 +135,9 @@ function placePiece() {
       }
     }
   }
+
+  // Mark that the piece has been placed
+  isPieceFalling = true;
 }
 
 // Clear full lines
