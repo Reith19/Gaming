@@ -128,11 +128,7 @@ function draw() {
   for (let row = 0; row < ROWS; row++) {
     for (let col = 0; col < COLS; col++) {
       if (board[row][col] === 1) {
-        ctx.fillStyle = "#7E1416"; // The color of the blocks
-        ctx.strokeStyle = "#5A0B10"; // Crisp border around the blocks
-        ctx.lineWidth = 2; // Crisp border width
-        ctx.fillRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        ctx.strokeRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE); // Draw the border
+        drawBlock(col, row, "#7E1416");
       }
     }
   }
@@ -141,17 +137,28 @@ function draw() {
   for (let row = 0; row < currentPiece.shape.length; row++) {
     for (let col = 0; col < currentPiece.shape[row].length; col++) {
       if (currentPiece.shape[row][col]) {
-        ctx.fillStyle = "#7E1416";
-        ctx.strokeStyle = "#5A0B10"; // Crisp border for the current piece
-        ctx.lineWidth = 2;
-        ctx.fillRect((currentPos.x + col) * BLOCK_SIZE, (currentPos.y + row) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
-        ctx.strokeRect((currentPos.x + col) * BLOCK_SIZE, (currentPos.y + row) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        drawBlock(currentPos.x + col, currentPos.y + row, "#7E1416");
       }
     }
   }
 
   // Draw the shadow (guideline)
   drawLandingGuideline();
+}
+
+// Draw a block with a 3D effect
+function drawBlock(x, y, color) {
+  const gradient = ctx.createLinearGradient(x * BLOCK_SIZE, y * BLOCK_SIZE, (x + 1) * BLOCK_SIZE, (y + 1) * BLOCK_SIZE);
+  gradient.addColorStop(0, "#ff5e57"); // Light side
+  gradient.addColorStop(1, "#7e1416"); // Dark side
+  ctx.fillStyle = gradient;
+
+  ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+
+  // Add a border for the block
+  ctx.strokeStyle = "#5A0B10"; // Dark red border
+  ctx.lineWidth = 2;
+  ctx.strokeRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
 }
 
 // Draw the landing guideline
@@ -163,11 +170,11 @@ function drawLandingGuideline() {
   }
 
   // Draw the guideline
-  ctx.strokeStyle = "rgba(255, 255, 255, 0.6)"; // Light white for the guideline
-  ctx.lineWidth = 1;
-  ctx.setLineDash([5, 5]); // Dotted line effect
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.8)"; // Solid white for the guideline
+  ctx.lineWidth = 2;
+  ctx.setLineDash([]); // Solid line for the guideline
 
-  // Draw the guideline
+  // Draw the guideline as a horizontal line
   for (let row = 0; row < currentPiece.shape.length; row++) {
     for (let col = 0; col < currentPiece.shape[row].length; col++) {
       if (currentPiece.shape[row][col]) {
@@ -178,7 +185,6 @@ function drawLandingGuideline() {
       }
     }
   }
-  ctx.setLineDash([]); // Reset the line dash
 }
 
 // Handle user input
