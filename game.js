@@ -15,23 +15,23 @@ let gameOver = false;
 function startGame() {
     board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
     currentPiece = generateRandomPiece();
-    currentPos = { x: 4, y: 0 };
+    currentPos = { x: COLS / 2 - 2, y: 0 }; // Adjust spawn position for centering pieces
     gameOver = false;
     requestAnimationFrame(gameLoop);
 }
 
 function generateRandomPiece() {
     const shapes = [
-        [[1, 1, 1, 1]],
-        [[1, 1], [1, 1]],
-        [[0, 1, 0], [1, 1, 1]],
-        [[1, 1, 0], [0, 1, 1]],
-        [[0, 1, 1], [1, 1, 0]],
-        [[1, 0, 0], [1, 1, 1]],
-        [[0, 0, 1], [1, 1, 1]]
+        [[1, 1, 1, 1]], // I
+        [[1, 1], [1, 1]], // O
+        [[0, 1, 0], [1, 1, 1]], // T
+        [[1, 1, 0], [0, 1, 1]], // S
+        [[0, 1, 1], [1, 1, 0]], // Z
+        [[1, 0, 0], [1, 1, 1]], // L
+        [[0, 0, 1], [1, 1, 1]] // J
     ];
     const index = Math.floor(Math.random() * shapes.length);
-    return { shape: shapes[index] };
+    return { shape: shapes[index], x: COLS / 2 - 1, y: 0 };
 }
 
 function gameLoop(timestamp) {
@@ -56,7 +56,7 @@ function movePiece(dx, dy) {
             placePiece();
             clearLines();
             currentPiece = generateRandomPiece();
-            currentPos = { x: 4, y: 0 };
+            currentPos = { x: COLS / 2 - 2, y: 0 };
             if (!isValidMove(currentPiece, currentPos)) {
                 gameOver = true;
             }
@@ -148,8 +148,8 @@ function rotatePieceClockwise() {
 }
 
 function rotatePieceCounterClockwise() {
-    let newShape = currentPiece.shape.map((_, index) => currentPiece.shape.map(row => row[index]));
-    let newPiece = { shape: newShape.reverse() };
+    let newShape = currentPiece.shape.map((_, index) => currentPiece.shape.map(row => row.reverse()[index]));
+    let newPiece = { shape: newShape };
     if (isValidMove(newPiece, currentPos)) {
         currentPiece = newPiece;
     }
