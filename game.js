@@ -24,6 +24,7 @@ let currentPiece;
 let currentPos;
 let gameInterval;
 let isGameOver = false;
+let isMoving = false; // To track whether the piece is moving
 
 // Start the game
 function startGame() {
@@ -166,11 +167,22 @@ function drawShadow() {
 
 // Handle user input
 document.addEventListener("keydown", (e) => {
+  if (isGameOver) return;
+
+  // Prevent holding down the keys
+  if (isMoving) return;
+
+  isMoving = true;
+
   if (e.key === "ArrowLeft") movePiece(-1, 0);
   if (e.key === "ArrowRight") movePiece(1, 0);
   if (e.key === "ArrowDown") movePiece(0, 1);
   if (e.key === "ArrowUp") rotatePiece();
   if (e.key === " ") movePiece(0, 1); // Automatically drop piece when space is pressed
+
+  setTimeout(() => {
+    isMoving = false;
+  }, 100); // Short delay to avoid multiple key presses
 });
 
 // Start the game
