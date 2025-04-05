@@ -21,7 +21,7 @@ const tetrominos = [
 let currentTetromino = createTetromino();
 let currentPosition = { x: Math.floor(COLUMNS / 2) - 1, y: 0 };
 let gameRunning = false;
-let fallSpeed = 1800;  // Falling speed set to 1800 milliseconds (slower fall)
+let fallSpeed = 1800;  // Falling speed in milliseconds (slower fall)
 let lastTime = 0;
 
 function createTetromino() {
@@ -109,18 +109,19 @@ function gameOver() {
     document.getElementById('score').innerText = 'Score: ' + score;
 }
 
+// The game loop function that will run continuously
 function gameLoop(timestamp) {
     const deltaTime = timestamp - lastTime;
     lastTime = timestamp;
 
     if (deltaTime > fallSpeed) {
-        moveTetrominoDown(); // Move the tetromino down after fallSpeed
+        moveTetrominoDown();
         drawBoard();
         drawTetromino();
     }
 
     if (gameRunning) {
-        requestAnimationFrame(gameLoop);
+        requestAnimationFrame(gameLoop); // Keep the loop running
     }
 }
 
