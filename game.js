@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 const ROWS = 20;
 const COLS = 10;
 const BLOCK_SIZE = 30;
-let fallSpeed = 750;  // Updated speed to be 25% faster
+let fallSpeed = 500; // Updated speed to 0.5 seconds
 let board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 let currentPiece;
 let currentPos;
@@ -53,15 +53,13 @@ function movePiece(dx, dy) {
     const newPos = { x: currentPos.x + dx, y: currentPos.y + dy };
     if (isValidMove(currentPiece, newPos)) {
         currentPos = newPos;
-        if (dy) {
-            if (!isValidMove(currentPiece, { x: currentPos.x, y: currentPos.y + 1 })) {
-                placePiece();
-                clearLines();
-                currentPiece = generateRandomPiece();
-                currentPos = { x: 4, y: 0 };
-                if (!isValidMove(currentPiece, currentPos)) {
-                    gameOver = true;
-                }
+        if (dy && !isValidMove(currentPiece, { x: currentPos.x, y: currentPos.y + 1 })) {
+            placePiece();
+            clearLines();
+            currentPiece = generateRandomPiece();
+            currentPos = { x: 4, y: 0 };
+            if (!isValidMove(currentPiece, currentPos)) {
+                gameOver = true;
             }
         }
     }
@@ -75,6 +73,7 @@ function placePiece() {
             }
         });
     });
+    isMoving = false;
 }
 
 function isValidMove(piece, pos) {
@@ -122,19 +121,37 @@ function drawBlock(x, y, color) {
 
 document.addEventListener("keydown", (event) => {
     if (!isMoving && !gameOver) {
-        if (event.key === "ArrowLeft") { movePiece(-1, 0); }
-        else if (event.key === "ArrowRight") { movePiece(1, 0); }
-        else if (event.key === "ArrowDown") { movePiece(0, 1); }
-        else if (event.key === "ArrowUp") {
-            rotatePiece();
-            clearLines();
+        switch (event.key) {
+            case "ArrowLeft":
+                movePiece(-1, 0);
+                break;
+            case "ArrowRight":
+                movePiece(1, 0);
+                break;
+            case "ArrowDown":
+                rotatePieceCounterClockwise();
+                break;
+            case "ArrowUp":
+                rotatePieceClockwise();
+                break;
+            case " ":
+                while (movePiece(0, 1)) {}
+                break;
         }
     }
 });
 
-function rotatePiece() {
-    let newShape = currentPiece.shape[0].map((val, index) => currentcurrentPiece.shape.map(row => row[index]).reverse());
-    const newPiece = { shape: newShape };
+function rotatePieceClockwise() {
+    let newShape = currentPiece.shape[0].map((val, index) => currentPiece.shape.map(row => row[index]).reverse());
+    let newPiece = { shape: newShape };
+    if (isValidMove(newPiece, currentPos)) {
+        currentPiece = newPiece;
+    }
+}
+
+function rotatePieceCounterClockwise() {
+    let newShape = currentPiece.shape[0].map((val, index) => currentPiece.shape.map(row => row[index]));
+    let newPiece = { shape: newShape.reverse() };
     if (isValidMove(newPiece, currentPos)) {
         currentPiece = newPiece;
     }
