@@ -188,6 +188,11 @@ document.addEventListener("keydown", (e) => {
   // Prevent holding down the keys
   if (isMoving) return;
 
+  // Prevent default behavior for arrow keys to avoid toggling other UI elements
+  if (["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", " "].includes(e.key)) {
+    e.preventDefault(); // Prevent default behavior (e.g., page scroll, UI toggling)
+  }
+
   isMoving = true;
 
   if (e.key === "ArrowLeft") movePiece(-1, 0);
