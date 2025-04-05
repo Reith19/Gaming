@@ -15,7 +15,7 @@ let gameOver = false;
 function startGame() {
     board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
     currentPiece = generateRandomPiece();
-    currentPos = { x: COLS / 2 - 2, y: 0 }; // Adjust spawn position for centering pieces
+    currentPos = { x: COLS / 2 - 2, y: 0 };
     gameOver = false;
     requestAnimationFrame(gameLoop);
 }
@@ -133,7 +133,7 @@ document.addEventListener("keydown", (event) => {
                 rotatePieceClockwise();
                 break;
             case " ":
-                while (movePiece(0, 1)) {} // drop to bottom
+                while (movePiece(0, 1)) {} // Drop to bottom
                 break;
         }
     }
