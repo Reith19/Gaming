@@ -73,7 +73,6 @@ function placePiece() {
             }
         });
     });
-    isMoving = false;
 }
 
 function isValidMove(piece, pos) {
