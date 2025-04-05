@@ -128,8 +128,11 @@ function draw() {
   for (let row = 0; row < ROWS; row++) {
     for (let col = 0; col < COLS; col++) {
       if (board[row][col] === 1) {
-        ctx.fillStyle = "#7E1416";
+        ctx.fillStyle = "#7E1416"; // The color of the blocks
+        ctx.strokeStyle = "#5A0B10"; // Crisp border around the blocks
+        ctx.lineWidth = 2; // Crisp border width
         ctx.fillRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        ctx.strokeRect(col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE); // Draw the border
       }
     }
   }
@@ -139,30 +142,43 @@ function draw() {
     for (let col = 0; col < currentPiece.shape[row].length; col++) {
       if (currentPiece.shape[row][col]) {
         ctx.fillStyle = "#7E1416";
+        ctx.strokeStyle = "#5A0B10"; // Crisp border for the current piece
+        ctx.lineWidth = 2;
         ctx.fillRect((currentPos.x + col) * BLOCK_SIZE, (currentPos.y + row) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        ctx.strokeRect((currentPos.x + col) * BLOCK_SIZE, (currentPos.y + row) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
       }
     }
   }
 
-  // Draw the shadow
-  drawShadow();
+  // Draw the shadow (guideline)
+  drawLandingGuideline();
 }
 
-// Draw the shadow of the piece
-function drawShadow() {
+// Draw the landing guideline
+function drawLandingGuideline() {
   let shadowY = currentPos.y;
+  // Find where the piece will land
   while (isValidMove(currentPiece, { x: currentPos.x, y: shadowY + 1 })) {
     shadowY++;
   }
 
+  // Draw the guideline
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.6)"; // Light white for the guideline
+  ctx.lineWidth = 1;
+  ctx.setLineDash([5, 5]); // Dotted line effect
+
+  // Draw the guideline
   for (let row = 0; row < currentPiece.shape.length; row++) {
     for (let col = 0; col < currentPiece.shape[row].length; col++) {
       if (currentPiece.shape[row][col]) {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.3)"; // Shadow color
-        ctx.fillRect((currentPos.x + col) * BLOCK_SIZE, (shadowY + row) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        ctx.beginPath();
+        ctx.moveTo((currentPos.x + col) * BLOCK_SIZE + BLOCK_SIZE / 2, (shadowY + row) * BLOCK_SIZE + BLOCK_SIZE);
+        ctx.lineTo((currentPos.x + col) * BLOCK_SIZE + BLOCK_SIZE / 2, (shadowY + row + 1) * BLOCK_SIZE);
+        ctx.stroke();
       }
     }
   }
+  ctx.setLineDash([]); // Reset the line dash
 }
 
 // Handle user input
