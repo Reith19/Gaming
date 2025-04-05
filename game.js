@@ -15,7 +15,7 @@ let gameOver = false;
 function startGame() {
     board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
     currentPiece = generateRandomPiece();
-    currentPos = { x: COLS / 2 - 2, y: 0 };
+    currentPos = { x: COLS / 2 - 2, y: 0 }; // Adjust spawn position for centering pieces
     gameOver = false;
     requestAnimationFrame(gameLoop);
 }
@@ -140,16 +140,17 @@ document.addEventListener("keydown", (event) => {
 });
 
 function rotatePieceClockwise() {
-    let newShape = currentPiece.shape.map((_, index) => currentPiece.shape.map(row => row[index]).reverse());
-    let newPiece = { shape: newShape };
+    const newShape = currentPiece.shape[0].map((_, index) => currentPiece.shape.map(row => row[index]).reverse());
+    const newPiece = { shape: newShape };
     if (isValidMove(newPiece, currentPos)) {
         currentPiece = newPiece;
     }
 }
 
 function rotatePieceCounterClockwise() {
-    let newShape = currentPiece.shape.map((_, index) => currentPiece.shape.map(row => row.reverse()[index]));
-    let newPiece = { shape: newShape };
+    // Rotate the piece counter-clockwise by reversing the rows and columns properly
+    const newShape = currentPiece.shape.map((_, index) => currentPiece.shape.map(row => row[index]));
+    const newPiece = { shape: newShape.reverse() };
     if (isValidMove(newPiece, currentPos)) {
         currentPiece = newPiece;
     }
