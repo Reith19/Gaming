@@ -2,13 +2,16 @@
 const canvas = document.getElementById("tetris");
 const ctx = canvas.getContext("2d");
 
+// Create an off-screen canvas for double buffering
+const offScreenCanvas = document.createElement("canvas");
+const offScreenCtx = offScreenCanvas.getContext("2d");
+
 // Game settings
 const ROWS = 20;
 const COLS = 10;
 const BLOCK_SIZE = 30;
-const FALL_SPEED = 1200; // Fall speed in milliseconds
+const FALL_SPEED = 1000; // Fall speed in milliseconds (adjustable)
 
-// Shapes of the Tetriminos
 const SHAPES = [
   [[1, 1, 1, 1]], // I
   [[1, 1], [1, 1]], // O
@@ -33,8 +36,12 @@ function startGame() {
   currentPos = { x: 4, y: 0 };
   isGameOver = false;
 
-  clearInterval(gameInterval);
-  gameInterval = setInterval(gameLoop, FALL_SPEED);
+  // Resize the off-screen canvas to match the main canvas size
+  offScreenCanvas.width = canvas.width;
+  offScreenCanvas.height = canvas.height;
+
+  // Start the game loop with rAF for smoother animation
+  requestAnimationFrame(gameLoop);
 }
 
 // Generate a random tetrimino piece
@@ -46,11 +53,11 @@ function generateRandomPiece() {
 // Game loop
 function gameLoop() {
   if (isGameOver) {
-    clearInterval(gameInterval);
     alert("Game Over!");
     return;
   }
 
+  // Update game state
   if (!movePiece(0, 1)) {
     placePiece();
     clearLines();
@@ -62,7 +69,11 @@ function gameLoop() {
     }
   }
 
+  // Render the game
   draw();
+
+  // Request the next frame for smoother animation
+  requestAnimationFrame(gameLoop);
 }
 
 // Move piece by dx and dy
@@ -122,7 +133,8 @@ function clearLines() {
 
 // Draw the game
 function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Draw the game to the off-screen canvas first
+  offScreenCtx.clearRect(0, 0, offScreenCanvas.width, offScreenCanvas.height);
 
   // Draw the board
   for (let row = 0; row < ROWS; row++) {
@@ -144,6 +156,9 @@ function draw() {
 
   // Draw the shadow (guideline)
   drawLandingGuideline();
+
+  // Finally, copy the off-screen canvas to the main canvas
+  ctx.drawImage(offScreenCanvas, 0, 0);
 }
 
 // Draw a block with a 3D effect
