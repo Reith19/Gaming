@@ -10,8 +10,9 @@ const offScreenCtx = offScreenCanvas.getContext("2d");
 const ROWS = 20;
 const COLS = 10;
 const BLOCK_SIZE = 30;
-const FALL_SPEED = 1000; // Fall speed in milliseconds (adjustable)
+const FALL_SPEED = 1500; // Fall speed in milliseconds (slowed down)
 
+// Shapes of the Tetriminos
 const SHAPES = [
   [[1, 1, 1, 1]], // I
   [[1, 1], [1, 1]], // O
