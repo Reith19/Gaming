@@ -10,7 +10,6 @@ let currentPiece;
 let currentPos;
 let lastTime = 0;
 let gameOver = false;
-let isMoving = false;
 
 // Start the game
 function startGame() {
@@ -119,7 +118,7 @@ function drawBlock(x, y, color) {
 }
 
 document.addEventListener("keydown", (event) => {
-    if (!isMoving && !gameOver) {
+    if (!gameOver) {
         switch (event.key) {
             case "ArrowLeft":
                 movePiece(-1, 0);
@@ -134,7 +133,7 @@ document.addEventListener("keydown", (event) => {
                 rotatePieceClockwise();
                 break;
             case " ":
-                while (movePiece(0, 1)) {}
+                while (movePiece(0, 1)) {} // drop to bottom
                 break;
         }
     }
@@ -149,8 +148,8 @@ function rotatePieceClockwise() {
 }
 
 function rotatePieceCounterClockwise() {
-    let newShape = currentPiece.shape.map((_, index) => currentPiece.shape.map(row => row.reverse()[index]));
-    let newPiece = { shape: newShape };
+    let newShape = currentPiece.shape.map((_, index) => currentPiece.shape.map(row => row[index]));
+    let newPiece = { shape: newShape.reverse() };
     if (isValidMove(newPiece, currentPos)) {
         currentPiece = newPiece;
     }
