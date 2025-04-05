@@ -69,8 +69,9 @@ function gameLoop() {
     currentPiece = generateRandomPiece();
     currentPos = { x: 4, y: 0 };
 
+    // Check if the new piece can be placed
     if (!isValidMove(currentPiece, currentPos)) {
-      isGameOver = true;
+      isGameOver = true; // End the game if no space for the piece
     }
   }
 
